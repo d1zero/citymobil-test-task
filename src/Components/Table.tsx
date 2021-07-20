@@ -9,11 +9,44 @@ interface carInterface {
     tariffs: any[]
 }
 
+const SearchSpan = styled.div`
+    min-height: 42px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+`;
+
+const SearchInput = styled.input`
+    height: 42px;
+    width: 87%;
+    border: 1px solid #5C00CE;
+    margin-right: 8px;
+    border-radius: 0px;
+    padding: 0;
+    padding-left: 20px;
+    font-size: 20px;
+    &:focus{
+        outline: none;
+    }
+`;
+
+const Button = styled.button`
+    height: 44px;
+    width: 12.5%;
+    border: none;
+    border-radius: 0px;
+    background-color: #5C00CE;
+    color: white;
+    font-size: 20px;
+`;
+
 const Wrapper = styled.div`
     width: 100%;
-    height: 828px;
     background-color: #fff;
     color:white;
+    padding: 8px;
+    height: auto;
 `;
 
 const Tabl = styled.table`
@@ -22,7 +55,9 @@ const Tabl = styled.table`
     border: 1px solid #9CA0A3;
     box-sizing: border-box;
     color:#1F232E;
-    /* margin-left: 10px; */
+    border-spacing: 0px;
+    border-collapse: collapse;
+    margin-top: 8px;
 `;
 
 const Th = styled.th`
@@ -31,6 +66,7 @@ const Th = styled.th`
     height: 48px;
     text-align: center;
     &:first-child{
+        padding-left: 4px;
         text-align: left;
     }
 `;
@@ -41,6 +77,7 @@ const Td = styled.td`
     background-color: #F7F8F9;
     text-align: center;
     &:first-child{
+        padding-left: 4px;
         text-align: left;
     }
     width: 12.5%;
@@ -48,7 +85,7 @@ const Td = styled.td`
 
 export default function Table() {
     const [data, setData]: any = useState()
-    const [selected, setSelected] = useState('')
+    // const [selected, setSelected] = useState('')
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,21 +106,21 @@ export default function Table() {
     }, [])
     return (
         <Wrapper>
+            <SearchSpan>
+                <SearchInput type="text" placeholder="Поиск не работает ещё, я не накодил йопта" /><Button>Поиск</Button>
+            </SearchSpan>
             <Tabl>
                 <thead>
                     <tr>
                         <Th>Марка и модель</Th>
                         {typeof (data) !== 'undefined' ?
-                            data?.tariffs_list.map((tariff: string) => (<Th key={tariff} id={tariff}>{tariff}</Th>)
-                            ) : ''}
+                            data?.tariffs_list.map((tariff: string) => (<Th key={tariff}>{tariff}</Th>)
+                            ) : 'undefined'}
                     </tr>
                 </thead>
                 <tbody>
                     {typeof (data) !== 'undefined' ?
                         data?.cars.map((car: carInterface) => {
-                            // Object.keys(car.tariffs).map((tar: string) => console.log(tar))
-                            // console.log(Object.keys(car.tariffs))
-                            // console.log(Object.values(car.tariffs))
                             let tariffs: any = []
 
                             for (let i = 0; i < data.tariffs_list.length; i++) {
@@ -92,6 +129,7 @@ export default function Table() {
 
                             Object.keys(car.tariffs).map((tar: string) => {
                                 tariffs[data.tariffs_list.indexOf(tar)] = Object.values(car.tariffs)[Object.keys(car.tariffs).indexOf(tar)].year
+                                return tariffs
                             })
 
                             return (<tr>

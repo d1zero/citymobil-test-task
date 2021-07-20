@@ -7,7 +7,6 @@ import styled from 'styled-components'
 
 const Content = styled.div`
     width: 100%;
-    height: 828px;
     background-color: #E41A50;
     color:white;
     display: flex;
@@ -22,7 +21,7 @@ function App() {
                 <Sidebar />
                 <Table/>
             </Content>
-            {/* <Footer /> */}
+            <Footer />
         </div>
     );
 }

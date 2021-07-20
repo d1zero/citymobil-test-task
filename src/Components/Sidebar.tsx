@@ -2,8 +2,9 @@ import styled from 'styled-components'
 
 const Wrapper = styled.div`
     min-width: 224px;
+    min-height: auto;
     background-color: #E41A50;
-    color:white;
+    color: white;
     display: flex;
     justify-content: center;
 `;
