@@ -22,7 +22,7 @@ function App() {
                 <Sidebar />
                 <Table/>
             </Content>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

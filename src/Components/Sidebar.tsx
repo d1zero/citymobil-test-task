@@ -1,14 +1,15 @@
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
-    width: 224px;
-    height: 828px;
+    min-width: 224px;
     background-color: #E41A50;
     color:white;
+    display: flex;
+    justify-content: center;
 `;
 
 export default function Sidebar() {
     return (
-        <Wrapper>asdasd</Wrapper>
+        <Wrapper><h2>Sidebar</h2></Wrapper>
     )
 }
