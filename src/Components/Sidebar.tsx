@@ -7,6 +7,7 @@ const Wrapper = styled.div`
     color: white;
     display: flex;
     justify-content: center;
+    min-height: 828px;
 `;
 
 export default function Sidebar() {

@@ -9,6 +9,17 @@ interface carInterface {
     tariffs: any[]
 }
 
+const Selected = styled.div`
+    color: #1F232E;
+    background-color: #F7F8F9;
+    margin: 16px 0;
+    height: 42px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+`;
+
 const SearchSpan = styled.div`
     min-height: 42px;
     padding: 0;
@@ -24,7 +35,7 @@ const SearchInput = styled.input`
     margin-right: 8px;
     border-radius: 0px;
     padding: 0;
-    padding-left: 20px;
+    padding-left: 16px;
     font-size: 20px;
     &:focus{
         outline: none;
@@ -51,13 +62,13 @@ const Wrapper = styled.div`
 
 const Tabl = styled.table`
     background: #FFFFFF;
-    width: calc(100wh-224px);
     border: 1px solid #9CA0A3;
     box-sizing: border-box;
     color:#1F232E;
     border-spacing: 0px;
     border-collapse: collapse;
     margin-top: 8px;
+    width: 100%;
 `;
 
 const Th = styled.th`
@@ -65,8 +76,9 @@ const Th = styled.th`
     background-color: #F7F8F9;
     height: 48px;
     text-align: center;
+    cursor: pointer;
     &:first-child{
-        padding-left: 4px;
+        padding-left: 16px;
         text-align: left;
     }
 `;
@@ -77,15 +89,73 @@ const Td = styled.td`
     background-color: #F7F8F9;
     text-align: center;
     &:first-child{
-        padding-left: 4px;
+        padding-left: 16px;
         text-align: left;
     }
     width: 12.5%;
+    cursor: pointer;
 `;
 
 export default function Table() {
     const [data, setData]: any = useState()
-    // const [selected, setSelected] = useState('')
+    const [selected, setSelected] = useState('')
+    // const [sortDirection, setSortDirection] = useState('')
+
+    function changeSelected(mark: string, model: string, tar: string) {
+        tar === '-'
+            ? setSelected(mark + ' ' + model)
+            : setSelected(mark + ' ' + model + ' ' + tar + ' года выпуска')
+        return selected
+    }
+
+
+    function sortTable(index: string) {
+        // const tbody = table?.querySelector('tbody')
+        // if (tbody) {
+        //     const compare = function (rowA: any, rowB: any) {
+        //         if (sortDirection === 'up-down') {
+        //             console.log(rowB.cells[index].innerHTML);
+        //             setSortDirection('down-up')
+        //             return rowA.cells[index].innerHTML - rowB.cells[index].innerHTML
+        //         } else {
+        //             setSortDirection('up-down')
+        //             return rowB.cells[index].innerHTML - rowA.cells[index].innerHTML
+        //         }
+        //     }
+        //     let rows = [].slice.call(tbody.rows);
+        //     rows.sort(compare);
+        //     console.log(rows);
+
+        //     table?.removeChild(tbody);
+        //     for (let i = 0; i < rows.length; i++) {
+        //         tbody.appendChild(rows[i])
+        //     }
+        //     table?.appendChild(tbody)
+        // }
+    }
+
+    function search() {
+        var inputValue = (document?.getElementById('search') as HTMLInputElement)?.value.toLowerCase();
+        var table = document.querySelector('table');
+        var tbody = table?.querySelector('tbody')
+        let len = table?.rows.length
+
+        if (len && tbody && table) {
+            if (inputValue !== '') {
+                for (let i = 1; i < len; i++) {
+                    if (table?.rows[i].cells[0].innerHTML.toLowerCase().startsWith(inputValue)) {
+                        table?.rows[i].setAttribute('style', 'display: ""')
+                    } else {
+                        table?.rows[i].setAttribute('style', 'display: none')
+                    }
+                }
+            } else {
+                for (let i = 1; i < len; i++) {
+                    table?.rows[i].removeAttribute('style')
+                }
+            }
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -107,14 +177,17 @@ export default function Table() {
     return (
         <Wrapper>
             <SearchSpan>
-                <SearchInput type="text" placeholder="Поиск не работает ещё, я не накодил йопта" /><Button>Поиск</Button>
+                <SearchInput type="text" id="search" placeholder="Поиск не работает ещё, я не накодил йопта" /><Button onClick={search}>Поиск</Button>
             </SearchSpan>
-            <Tabl>
+            <Selected>
+                {selected === '' ? 'Никакой автомобиль не выбран' : `Выбран автомобиль ${selected}`}
+            </Selected>
+            <Tabl id="table">
                 <thead>
                     <tr>
-                        <Th>Марка и модель</Th>
+                        <Th datatype='text' onClick={() => sortTable('0')}>Марка и модель</Th>
                         {typeof (data) !== 'undefined' ?
-                            data?.tariffs_list.map((tariff: string) => (<Th key={tariff}>{tariff}</Th>)
+                            data?.tariffs_list.map((tariff: string) => (<Th datatype='text' onClick={() => sortTable((data.tariffs_list.indexOf(tariff) + 1).toString())} key={tariff}>{tariff}</Th>)
                             ) : 'undefined'}
                     </tr>
                 </thead>
@@ -132,14 +205,17 @@ export default function Table() {
                                 return tariffs
                             })
 
-                            return (<tr>
-                                <Td>{car.mark} {car.model}</Td>
-                                {tariffs.map((tar: string) => (<Td>{tar}</Td>))}
+                            return (<tr id={car.mark + ' ' + car.model}>
+                                <Td onClick={() => changeSelected(car.mark, car.model, '-')}>{car.mark} {car.model}</Td>
+                                {tariffs.map((tar: string) => (<Td onClick={() => changeSelected(car.mark, car.model, tar)}>{tar}</Td>))}
                             </tr>)
                         }
                         ) : ''}
                 </tbody>
             </Tabl>
+            <Selected>
+                {selected === '' ? 'Никакой автомобиль не выбран' : `Выбран автомобиль ${selected}`}
+            </Selected>
         </Wrapper>
     )
 }
