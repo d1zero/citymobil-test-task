@@ -99,7 +99,7 @@ const Td = styled.td`
 export default function Table() {
     const [data, setData]: any = useState()
     const [selected, setSelected] = useState('')
-    // const [sortDirection, setSortDirection] = useState('')
+    const [sortDirection, setSortDirection] = useState('')
 
     function changeSelected(mark: string, model: string, tar: string) {
         tar === '-'
@@ -110,28 +110,29 @@ export default function Table() {
 
 
     function sortTable(index: string) {
-        // const tbody = table?.querySelector('tbody')
-        // if (tbody) {
-        //     const compare = function (rowA: any, rowB: any) {
-        //         if (sortDirection === 'up-down') {
-        //             console.log(rowB.cells[index].innerHTML);
-        //             setSortDirection('down-up')
-        //             return rowA.cells[index].innerHTML - rowB.cells[index].innerHTML
-        //         } else {
-        //             setSortDirection('up-down')
-        //             return rowB.cells[index].innerHTML - rowA.cells[index].innerHTML
-        //         }
-        //     }
-        //     let rows = [].slice.call(tbody.rows);
-        //     rows.sort(compare);
-        //     console.log(rows);
+        var table = document.querySelector('table')
+        const tbody = table?.querySelector('tbody')
+        if (tbody) {
+            const compare = function (rowA: any, rowB: any) {
+                if (sortDirection === 'up-down') {
+                    console.log(rowB.cells[index].innerHTML);
+                    setSortDirection('down-up')
+                    return rowA.cells[index].innerHTML - rowB.cells[index].innerHTML
+                } else {
+                    setSortDirection('up-down')
+                    return rowB.cells[index].innerHTML - rowA.cells[index].innerHTML
+                }
+            }
+            let rows = [].slice.call(tbody.rows);
+            rows.sort(compare);
+            console.log(rows);
 
-        //     table?.removeChild(tbody);
-        //     for (let i = 0; i < rows.length; i++) {
-        //         tbody.appendChild(rows[i])
-        //     }
-        //     table?.appendChild(tbody)
-        // }
+            table?.removeChild(tbody);
+            for (let i = 0; i < rows.length; i++) {
+                tbody.appendChild(rows[i])
+            }
+            table?.appendChild(tbody)
+        }
     }
 
     function search() {
