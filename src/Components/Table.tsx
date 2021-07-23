@@ -178,7 +178,7 @@ export default function Table() {
     return (
         <Wrapper>
             <SearchSpan>
-                <SearchInput type="text" id="search" placeholder="Поиск не работает ещё, я не накодил йопта" /><Button onClick={search}>Поиск</Button>
+                <SearchInput type="text" id="search" placeholder="Поиск по авто" /><Button onClick={search}>Поиск</Button>
             </SearchSpan>
             <Selected>
                 {selected === '' ? 'Никакой автомобиль не выбран' : `Выбран автомобиль ${selected}`}
